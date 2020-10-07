@@ -35,9 +35,9 @@ parser.add_argument("--bern", type=bool_parser, default=False,
 parser.add_argument("--margin", type=float, default=1.0)
 parser.add_argument("--norm", type=int, default=2, help="[1 | 2]")
 parser.add_argument("--log", type=bool_parser, default=True, help="logging or not")
-parser.add_argument("--model", type=str, default="TransE_nn", help="The model for training")
+parser.add_argument("--model", type=str, default="SME", help="The model for training")
 parser.add_argument("--loss", type=str, default="margin", help="loss function")
-parser.add_argument("--hidden", nargs="+", default=[100], help="hidden layer")
+parser.add_argument("--hidden", type=int, default=100, help="hidden layer")
 configs = parser.parse_args()
 
 dataset_name = configs.dataset
@@ -51,6 +51,7 @@ lr_decay = configs.lr_decay
 norm = configs.norm
 gpu = configs.gpu
 loss_function = configs.loss
+hidden = configs.hidden
 
 if configs.debug:
     print(
