@@ -3,6 +3,7 @@ import argparse
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 import pandas as pd
 
 from models.model_SME import SME
@@ -38,6 +39,7 @@ parser.add_argument("--log", type=bool_parser, default=True, help="logging or no
 parser.add_argument("--model", type=str, default="SME", help="The model for training")
 parser.add_argument("--loss", type=str, default="margin", help="loss function")
 parser.add_argument("--hidden", type=int, default=100, help="hidden layer")
+parser.add_argument("--reg", type=float, default=0., help="The coefficient for regularization")
 configs = parser.parse_args()
 
 dataset_name = configs.dataset
@@ -52,6 +54,7 @@ norm = configs.norm
 gpu = configs.gpu
 loss_function = configs.loss
 hidden = configs.hidden
+reg = configs.reg
 
 if configs.debug:
     print(
@@ -70,7 +73,7 @@ n_rel = reader.n_rel
 ### create model and optimizer
 if configs.debug:
     print("start building model...", flush=True)
-model = SME(n_ent, n_rel, dim, hidden, margin).to(device)
+model = SME(n_ent, n_rel, dim, hidden, margin, reg).to(device)
 if configs.debug:
     print("built model: ", flush=True)
     print(model, flush=True)
@@ -99,7 +102,7 @@ for epoch in range(1, epochs + 1):
         print("epoch %d: lr: %.4f average loss per batch: %.4f" %
               (epoch, learning_rate, total_loss / (n_train // batch_size)), flush=True)
     total_loss = 0
-
+model.ent_embedding.weight.data = F.normalize(model.ent_embedding.weight.data, dim=1)
 ### evaluate the triples in test_data
 all_triplets = reader.get_all_triplets()
 

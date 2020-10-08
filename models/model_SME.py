@@ -21,17 +21,20 @@ class LinearLayer(nn.Module):
 
 
 class SME(nn.Module):
-    def __init__(self, n_ent, n_rel, depth, hidden, margin):
+    def __init__(self, n_ent, n_rel, depth, hidden, margin, reg):
         super(SME, self).__init__()
 
         self.margin = margin
         self.depth = depth
         self.hidden = hidden
+        self.reg = reg
         self.ent_embedding = nn.Embedding(n_ent, depth)
         self.rel_embedding = nn.Embedding(n_rel, depth)
 
         self.lll = LinearLayer(depth, hidden)
         self.rll = LinearLayer(depth, hidden)
+
+        #self.all_params = [self.ent_embedding.weight, self.rel_embedding.weight, ]
 
     def initialize(self):
         nn.init.xavier_normal_(self.ent_embedding)
