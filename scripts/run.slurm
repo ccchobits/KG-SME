@@ -52,13 +52,15 @@ norm=1
 
 #python3 ../main/main.py --gpu 3 --dim 768 --bs 2048 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 900
 
-python3 ../main/main.py --gpu 3 --dim 1024 --bs 4096 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 1024
+#python3 ../main/main.py --gpu 3 --dim 1024 --bs 4096 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 1024
 
+#python3 ../main/main.py --gpu 3 --dim 1024 --bs 4096 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 1024 --reg 0.00001
 
+#python3 ../main/main.py --gpu 3 --dim 1024 --bs 4096 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 1024 --reg 0.00002
 
+#python3 ../main/main.py --gpu 3 --dim 1280 --bs 4096 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 1024 --reg 0.000
 
-
-
+python3 ../main/main.py --gpu 3 --dim 1280 --bs 4096 --init_lr 0.01 --lr_decay 1.2 --bern False --margin 3.0 --norm 1 --epochs 1000 --hidden 1280 --reg 0.000
 
 
 

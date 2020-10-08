@@ -34,7 +34,7 @@ class SME(nn.Module):
         self.lll = LinearLayer(depth, hidden)
         self.rll = LinearLayer(depth, hidden)
 
-        #self.all_params = [self.ent_embedding.weight, self.rel_embedding.weight, ]
+        self.params = [self.ent_embedding.weight, self.rel_embedding.weight]#, *list(self.lll.parameters()), *list(self.rll.parameters())]
 
     def initialize(self):
         nn.init.xavier_normal_(self.ent_embedding)
@@ -58,5 +58,12 @@ class SME(nn.Module):
         neg_heads, neg_tails, neg_rels = neg_x[:, 0], neg_x[:, 1], neg_x[:, 2]
         pos_score = self.get_score(pos_heads, pos_tails, pos_rels)
         neg_score = self.get_score(neg_heads, neg_tails, neg_rels)
-        return torch.max((self.margin + pos_score - neg_score), torch.tensor([0.]).to(device)).mean()
+        if self.reg == 0:
+            return torch.max((self.margin + pos_score - neg_score), torch.tensor([0.]).to(device)).mean()
+        return torch.max((self.margin + pos_score - neg_score), torch.tensor([0.]).to(device)).mean() + self.reg * self.get_reg() 
 
+    def get_reg(self):
+        penalty = 0
+        for param in self.params:
+            penalty += torch.sum(param.data ** 2) / 2
+        return penalty 
